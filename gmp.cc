@@ -18,6 +18,8 @@ add(const Arguments &args) {
   if (args[0]->IsNumber() && args[1]->IsNumber()) {
     Local<Integer> res = Integer::New(args[0]->Int32Value() + args[1]->Int32Value());
     return scope.Close(res);
+  } else {
+    return ThrowException(Exception::Error(String::New("invalid argument error!")));
   }
 }
 
@@ -25,7 +27,9 @@ extern "C" void
 init (Handle<Object> target)
 {
   HandleScope scope;
+
+  target->Set(String::New("version"), String::New(gmp_version));
   target->Set(String::New("str"), String::New("i am a string!"));
   target->Set(String::New("num"), Number::New(34));
-  target->Set(String::New("add"), FunctionTemplate::New(add)->GetFunction());
+  NODE_SET_METHOD(target, "add", add);
 }
