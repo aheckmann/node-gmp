@@ -1,7 +1,13 @@
-#include <v8.h>
 #include <math.h>
 #include <string.h>
+#include <v8.h>
 #include <node.h>
+
+#include <stdio.h>
+#include <stdarg.h>
+#include <obstack.h>
+#include <gmp.h>
+#include <gmpxx.h>
 
 using namespace v8;
 using namespace node;
