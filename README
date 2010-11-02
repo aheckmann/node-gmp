@@ -4,3 +4,6 @@ node-gmp
 http://gmplib.org/
 built with c++ enabled ( ./configure --enable-cxx )
 
+
+installation
+  $ node-waf configure build
