@@ -30,6 +30,23 @@ add(const Arguments &args) {
   }
 }
 
+Handle<Value>
+mul(const Arguments &args) {
+  HandleScope scope;
+  if (args[0]->IsString() && args[1]->IsString()) {
+    String::Utf8Value arg0(args[0]->ToString());
+    String::Utf8Value arg1(args[1]->ToString());
+    mpz_class a(*arg0, 10);
+    mpz_class b(*arg1, 10);
+    mpz_class c = a * b;
+    Local<String> res = String::New(c.get_str(10).c_str());
+    return scope.Close(res);
+  } else {
+    return ThrowException(Exception::Error(String::New("invalid argument error!")));
+  }
+}
+
+
 extern "C" void
 init (Handle<Object> target)
 {
