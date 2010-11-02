@@ -1,2 +1,3 @@
 
 include and build gmp locally
+allow returning the number in user specified base
