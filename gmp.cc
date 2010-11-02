@@ -53,7 +53,19 @@ init (Handle<Object> target)
   HandleScope scope;
 
   target->Set(String::New("version"), String::New(gmp_version));
-  target->Set(String::New("str"), String::New("i am a string!"));
-  target->Set(String::New("num"), Number::New(34));
+  //target->Set(String::New("str"), String::New("i am a string!"));
+  //target->Set(String::New("num"), Number::New(34));
   NODE_SET_METHOD(target, "add", add);
+  NODE_SET_METHOD(target, "mul", mul);
+  NODE_SET_METHOD(target, "longToBinary", noop);
+  NODE_SET_METHOD(target, "binaryToLong", noop);
+  NODE_SET_METHOD(target, "base64ToLong", noop);
+  NODE_SET_METHOD(target, "rand", noop);
+  NODE_SET_METHOD(target, "sub", noop);
+  NODE_SET_METHOD(target, "pow", noop);
+  NODE_SET_METHOD(target, "cmp", noop);
+  NODE_SET_METHOD(target, "mod", noop);
+  NODE_SET_METHOD(target, "div", noop);
+  NODE_SET_METHOD(target, "powmod", noop);
 }
+
