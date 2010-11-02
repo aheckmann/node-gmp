@@ -82,6 +82,21 @@ mul(const Arguments &args) {
   }
 }
 
+Handle<Value>
+div(const Arguments &args) {
+  HandleScope scope;
+  if (args[0]->IsString() && args[1]->IsString()) {
+    String::Utf8Value arg0(args[0]->ToString());
+    String::Utf8Value arg1(args[1]->ToString());
+    mpz_class a(*arg0, 10);
+    mpz_class b(*arg1, 10);
+    mpz_class c = a / b;
+    Local<String> res = String::New(c.get_str(10).c_str());
+    return scope.Close(res);
+  } else {
+    return ex();
+  }
+}
 
 extern "C" void
 init (Handle<Object> target)
@@ -101,7 +116,7 @@ init (Handle<Object> target)
   NODE_SET_METHOD(target, "pow", noop);
   NODE_SET_METHOD(target, "cmp", noop);
   NODE_SET_METHOD(target, "mod", noop);
-  NODE_SET_METHOD(target, "div", noop);
+  NODE_SET_METHOD(target, "div", div);
   NODE_SET_METHOD(target, "powmod", noop);
 }
 

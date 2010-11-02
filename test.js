@@ -10,4 +10,5 @@ console.log(gmp.add(a,b));
 console.log(a);
 console.log(gmp.sub(a,b));
 console.log( gmp.mul(a,b) );
+console.log( gmp.div(b,a) );
 
