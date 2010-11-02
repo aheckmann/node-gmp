@@ -1,3 +1,4 @@
 *.swp
 build/*
 .lock-wscript
+oldstuff.cc
