@@ -27,9 +27,18 @@ ex(Handle<String> msg = String::New("invalid argument")) {
 Handle<Value>
 add(const Arguments &args) {
   HandleScope scope;
-  if ( (args[0]->IsNumber() || args[0]->IsString() )
+
+  if (( args[0]->IsNumber() || args[0]->IsString())
     && (args[1]->IsNumber() || args[1]->IsString() )) {
-    Local<Integer> res = Integer::New(args[0]->Int32Value() + args[1]->Int32Value());
+
+    String::Utf8Value arg0(args[0]->ToString());
+    String::Utf8Value arg1(args[1]->ToString());
+
+    mpz_class a(*arg0, 10);
+    mpz_class b(*arg1, 10);
+    mpz_class c = a + b;
+
+    Local<String> res = String::New(c.get_str(10).c_str());
     return scope.Close(res);
   } else {
     return ex();
