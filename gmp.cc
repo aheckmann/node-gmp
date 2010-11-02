@@ -14,6 +14,53 @@ using namespace node;
 
 // http://github.com/embedthis/packages/blob/a0123bc7a4728dd1b4eec012d46f2bf45ae3c8f0/php/php-5.3.2/ext/gmp/gmp.c
 
+const char * gettype(const Arguments &args){
+  const char * ret = "";
+
+  if (args[0]->IsUndefined()){
+    ret = "undefined";
+
+  } else if (args[0]->IsString()){
+    ret = "string";
+
+  } else if (args[0]->IsFunction()){
+    ret = "function";
+
+  } else if (args[0]->IsUint32()){
+    ret = "uint32";
+
+  } else if (args[0]->IsInt32()){
+    ret = "int32";
+
+  } else if (args[0]->IsArray()){
+    ret = "array";
+
+  } else if (args[0]->IsBoolean()){
+    ret = "boolean";
+
+  } else if (args[0]->IsNull()){
+    ret = "null";
+
+  } else if (args[0]->IsRegExp()){
+    ret = "regexp";
+
+  } else if (args[0]->IsObject()){
+    ret = "object";
+
+  } else if (args[0]->IsNumber()){
+    ret = "number";
+  }
+
+  return ret;
+}
+
+Handle<Value>
+getType(const Arguments &args){
+  HandleScope scope;
+  Local<String> res = String::New(gettype(args));
+  return scope.Close(res);
+}
+
 Handle<Value>
 noop(const Arguments &args) {
   return Undefined();
@@ -132,5 +179,7 @@ init (Handle<Object> target)
   NODE_SET_METHOD(target, "cmp", noop);
   NODE_SET_METHOD(target, "mod", noop);
   NODE_SET_METHOD(target, "powmod", noop);
+
+  NODE_SET_METHOD(target, "type", getType);
 }
 
