@@ -46,6 +46,27 @@ add(const Arguments &args) {
 }
 
 Handle<Value>
+sub(const Arguments &args) {
+  HandleScope scope;
+
+  if (( args[0]->IsNumber() || args[0]->IsString())
+    && (args[1]->IsNumber() || args[1]->IsString() )) {
+
+    String::Utf8Value arg0(args[0]->ToString());
+    String::Utf8Value arg1(args[1]->ToString());
+
+    mpz_class a(*arg0, 10);
+    mpz_class b(*arg1, 10);
+    mpz_class c = a - b;
+
+    Local<String> res = String::New(c.get_str(10).c_str());
+    return scope.Close(res);
+  } else {
+    return ex();
+  }
+}
+
+Handle<Value>
 mul(const Arguments &args) {
   HandleScope scope;
   if (args[0]->IsString() && args[1]->IsString()) {
@@ -71,12 +92,12 @@ init (Handle<Object> target)
   //target->Set(String::New("str"), String::New("i am a string!"));
   //target->Set(String::New("num"), Number::New(34));
   NODE_SET_METHOD(target, "add", add);
+  NODE_SET_METHOD(target, "sub", sub);
   NODE_SET_METHOD(target, "mul", mul);
   NODE_SET_METHOD(target, "longToBinary", noop);
   NODE_SET_METHOD(target, "binaryToLong", noop);
   NODE_SET_METHOD(target, "base64ToLong", noop);
   NODE_SET_METHOD(target, "rand", noop);
-  NODE_SET_METHOD(target, "sub", noop);
   NODE_SET_METHOD(target, "pow", noop);
   NODE_SET_METHOD(target, "cmp", noop);
   NODE_SET_METHOD(target, "mod", noop);
