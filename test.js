@@ -6,6 +6,6 @@ var b = "90894587590237850247890451273126743687548782309875623443738065740178101
 
 console.log("gmp version: %s" ,gmp.version);
 
-console.log(gmp.add(4,88));
+console.log(gmp.add(a,b));
 console.log( gmp.mul(a,b) );
 
