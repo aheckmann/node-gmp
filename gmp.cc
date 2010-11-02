@@ -20,13 +20,19 @@ noop(const Arguments &args) {
 }
 
 Handle<Value>
+ex(Handle<String> msg = String::New("invalid argument")) {
+  return ThrowException(Exception::Error(msg));
+}
+
+Handle<Value>
 add(const Arguments &args) {
   HandleScope scope;
-  if (args[0]->IsNumber() && args[1]->IsNumber()) {
+  if ( (args[0]->IsNumber() || args[0]->IsString() )
+    && (args[1]->IsNumber() || args[1]->IsString() )) {
     Local<Integer> res = Integer::New(args[0]->Int32Value() + args[1]->Int32Value());
     return scope.Close(res);
   } else {
-    return ThrowException(Exception::Error(String::New("invalid argument error!")));
+    return ex();
   }
 }
 
@@ -42,7 +48,7 @@ mul(const Arguments &args) {
     Local<String> res = String::New(c.get_str(10).c_str());
     return scope.Close(res);
   } else {
-    return ThrowException(Exception::Error(String::New("invalid argument error!")));
+    return ex();
   }
 }
 
