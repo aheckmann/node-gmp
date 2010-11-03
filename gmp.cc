@@ -14,6 +14,12 @@ using namespace node;
 
 // http://github.com/embedthis/packages/blob/a0123bc7a4728dd1b4eec012d46f2bf45ae3c8f0/php/php-5.3.2/ext/gmp/gmp.c
 
+
+
+
+
+
+
 const char * gettype(const Arguments &args){
   const char * ret = "";
 
@@ -71,26 +77,62 @@ ex(Handle<String> msg = String::New("invalid argument")) {
   return ThrowException(Exception::Error(msg));
 }
 
+
+
+Handle<String> getArg(Handle<Value> arg) {
+  if ( arg->IsUint32() || arg->IsInt32() ) {
+    return arg->ToString();
+  }
+  if (arg->IsString()) {
+    // handle decimals
+    return arg->ToString();
+  }
+  ex();
+}
+
+mpz_class getmpz(Handle<Value> arg) {
+  if (arg->IsUint32() || arg->IsInt32()) {
+    String::Utf8Value val(arg);
+    mpz_class a(*val, 10);
+    return a;
+  }
+  if (false && arg->IsString()) {
+    // handle decimals
+    String::Utf8Value val(arg);
+    mpz_class a(*val, 10);
+    return a;
+  }
+  throw "invalid argument";
+}
+
+
+
+
+
+
 Handle<Value>
 add(const Arguments &args) {
   HandleScope scope;
 
-  if (( args[0]->IsNumber() || args[0]->IsString())
-    && (args[1]->IsNumber() || args[1]->IsString() )) {
+  /*
+  String::Utf8Value arg0(getArg(args[0]));
+  String::Utf8Value arg1(getArg(args[1]));
+  mpz_class a(*arg0, 10);
+  mpz_class b(*arg1, 10);
+  mpz_class c = a + b;
+  */
 
-    String::Utf8Value arg0(args[0]->ToString());
-    String::Utf8Value arg1(args[1]->ToString());
+  mpz_class c;
 
-    mpz_class a(*arg0, 10);
-    mpz_class b(*arg1, 10);
-    mpz_class c = a + b;
-
-    Local<String> res = String::New(c.get_str(10).c_str());
-    return scope.Close(res);
-
-  } else {
-    return ex();
+  try {
+    c = getmpz(args[0]) + getmpz(args[1]);
+  } catch (const char * err) {
+    return ex(String::New(err));
   }
+
+  Local<String> res = String::New(c.get_str(10).c_str());
+  return scope.Close(res);
+
 }
 
 Handle<Value>

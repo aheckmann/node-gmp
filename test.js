@@ -7,6 +7,7 @@ var b = "90894587590237850247890451273126743687548782309875623443738065740178101
 
 console.log("gmp version: %s", gmp.version);
 
+/*
 assert.equal(gmp.type(function(){}), "function");
 assert.equal(gmp.type([]), "array");
 assert.equal(gmp.type(Array()), "array");
@@ -27,9 +28,12 @@ assert.equal(gmp.type( -0.49 ), "number");
 assert.equal(gmp.type( 3.56 ), "number");
 assert.equal(gmp.type( new RegExp("^yo") ), "regexp");
 assert.equal(gmp.type( /^a/i ), "regexp");
+*/
 
 console.log("add", gmp.add(a,b));
 console.log("sub", gmp.sub(a,1));
 console.log("mul", gmp.mul(a,b) );
 console.log("div",  gmp.div(b,4589023485920389) );
 
+console.log(gmp.add(1,4));
+console.log(gmp.add(1,"4.5"));
