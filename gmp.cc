@@ -169,6 +169,22 @@ div(const Arguments &args) {
   return scope.Close(res);
 }
 
+Handle<Value>
+mod(const Arguments &args) {
+  HandleScope scope;
+  mpz_class c;
+
+  try {
+    c = getmpz(args[0]) % getmpz(args[1]);
+  } catch (const char * err) {
+    return ex(String::New(err));
+  }
+
+  Local<String> res = String::New(c.get_str(10).c_str());
+  return scope.Close(res);
+}
+
+
 
 extern "C" void
 init (Handle<Object> target)
@@ -182,13 +198,13 @@ init (Handle<Object> target)
   NODE_SET_METHOD(target, "sub", sub);
   NODE_SET_METHOD(target, "mul", mul);
   NODE_SET_METHOD(target, "div", div);
+  NODE_SET_METHOD(target, "mod", mod);
   NODE_SET_METHOD(target, "longToBinary", noop);
   NODE_SET_METHOD(target, "binaryToLong", noop);
   NODE_SET_METHOD(target, "base64ToLong", noop);
   NODE_SET_METHOD(target, "rand", noop);
   NODE_SET_METHOD(target, "pow", noop);
   NODE_SET_METHOD(target, "cmp", noop);
-  NODE_SET_METHOD(target, "mod", noop);
   NODE_SET_METHOD(target, "powmod", noop);
 
   // testing

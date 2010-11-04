@@ -33,7 +33,8 @@ assert.equal(gmp.type( /^a/i ), "regexp");
 console.log("add", gmp.add(a,b));
 console.log("sub", gmp.sub(a,1));
 console.log("mul", gmp.mul(a,b) );
-console.log("div",  gmp.div(b,4589023485920389) );
+console.log("div", gmp.div(b,4589023485920389) );
+console.log("mod", gmp.mod(15, 12.3) );
 
 console.log(gmp.add(1,4));
-console.log(gmp.add(1,"4.5"));
+console.log(gmp.add(1,"4.5234829342839023489203.2"));
