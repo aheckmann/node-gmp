@@ -93,13 +93,7 @@ Handle<String> getArg(Handle<Value> arg) {
 }
 
 mpz_class getmpz(Handle<Value> arg) {
-  if (arg->IsUint32() || arg->IsInt32() || arg->IsNumber()) {
-    String::Utf8Value val(arg);
-    mpz_class a(*val, 10);
-    return a;
-  }
-
-  if (arg->IsString()) {
+  if (arg->IsUint32() || arg->IsInt32() || arg->IsNumber() || arg->IsString()) {
     String::Utf8Value val(arg);
 
     // truncate decimals
