@@ -184,6 +184,46 @@ mod(const Arguments &args) {
   return scope.Close(res);
 }
 
+Handle<Value>
+pow(const Arguments &args) {
+  HandleScope scope;
+
+  if (!args[1]->IsNumber()) {
+    return ex(String::New("exponent must be an int"));
+  }
+
+  if (!(args[0]->IsUint32() || args[0]->IsInt32() || args[0]->IsNumber() || args[0]->IsString())) {
+    return ex(String::New("invalid argument"));
+  }
+
+  String::Utf8Value val(args[0]);
+
+  // truncate decimals
+  const char *num = strtok(*val, ".");
+  mpz_t a;
+  mpz_init_set_str(a, num, 10);
+
+  mpz_t c;
+  mpz_init(c);
+
+  try {
+    mpz_pow_ui(c, a, (long)args[1]->Int32Value());
+  } catch (const char *err) {
+    return ex(String::New(err));
+  }
+
+  mpz_clear(a);
+
+  char str[ mpz_sizeinbase(c, 10) + 2 ];
+
+  mpz_get_str(str, 10, c);
+
+  mpz_clear(c);
+
+  Local<String> res = String::New(str);
+  return scope.Close(res);
+}
+
 
 
 extern "C" void
@@ -199,11 +239,11 @@ init (Handle<Object> target)
   NODE_SET_METHOD(target, "mul", mul);
   NODE_SET_METHOD(target, "div", div);
   NODE_SET_METHOD(target, "mod", mod);
+  NODE_SET_METHOD(target, "pow", pow);
   NODE_SET_METHOD(target, "longToBinary", noop);
   NODE_SET_METHOD(target, "binaryToLong", noop);
   NODE_SET_METHOD(target, "base64ToLong", noop);
   NODE_SET_METHOD(target, "rand", noop);
-  NODE_SET_METHOD(target, "pow", noop);
   NODE_SET_METHOD(target, "cmp", noop);
   NODE_SET_METHOD(target, "powmod", noop);
 
