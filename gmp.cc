@@ -60,6 +60,8 @@ const char * gettype(const Arguments &args){
   return ret;
 }
 
+
+
 Handle<Value>
 getType(const Arguments &args){
   HandleScope scope;
@@ -91,17 +93,23 @@ Handle<String> getArg(Handle<Value> arg) {
 }
 
 mpz_class getmpz(Handle<Value> arg) {
-  if (arg->IsUint32() || arg->IsInt32()) {
+  if (arg->IsUint32() || arg->IsInt32() || arg->IsNumber()) {
     String::Utf8Value val(arg);
     mpz_class a(*val, 10);
     return a;
   }
-  if (false && arg->IsString()) {
-    // handle decimals
+
+  if (arg->IsString()) {
     String::Utf8Value val(arg);
-    mpz_class a(*val, 10);
+
+    // truncate decimals
+    char * num = strtok(*val, ".");
+
+    mpz_class a(num, 10);
+
     return a;
   }
+
   throw "invalid argument";
 }
 
