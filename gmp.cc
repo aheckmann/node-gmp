@@ -115,21 +115,9 @@ mpz_class getmpz(Handle<Value> arg) {
 
 
 
-
-
-
 Handle<Value>
 add(const Arguments &args) {
   HandleScope scope;
-
-  /*
-  String::Utf8Value arg0(getArg(args[0]));
-  String::Utf8Value arg1(getArg(args[1]));
-  mpz_class a(*arg0, 10);
-  mpz_class b(*arg1, 10);
-  mpz_class c = a + b;
-  */
-
   mpz_class c;
 
   try {
