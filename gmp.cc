@@ -128,74 +128,53 @@ add(const Arguments &args) {
 
   Local<String> res = String::New(c.get_str(10).c_str());
   return scope.Close(res);
-
 }
 
 Handle<Value>
 sub(const Arguments &args) {
   HandleScope scope;
+  mpz_class c;
 
-  if (( args[0]->IsNumber() || args[0]->IsString())
-    && (args[1]->IsNumber() || args[1]->IsString() )) {
-
-    String::Utf8Value arg0(args[0]->ToString());
-    String::Utf8Value arg1(args[1]->ToString());
-
-    mpz_class a(*arg0, 10);
-    mpz_class b(*arg1, 10);
-    mpz_class c = a - b;
-
-    Local<String> res = String::New(c.get_str(10).c_str());
-    return scope.Close(res);
-
-  } else {
-    return ex();
+  try {
+    c = getmpz(args[0]) - getmpz(args[1]);
+  } catch (const char * err) {
+    return ex(String::New(err));
   }
+
+  Local<String> res = String::New(c.get_str(10).c_str());
+  return scope.Close(res);
 }
 
 Handle<Value>
 mul(const Arguments &args) {
   HandleScope scope;
+  mpz_class c;
 
-  if (( args[0]->IsNumber() || args[0]->IsString())
-    && (args[1]->IsNumber() || args[1]->IsString() )) {
-
-    String::Utf8Value arg0(args[0]->ToString());
-    String::Utf8Value arg1(args[1]->ToString());
-
-    mpz_class a(*arg0, 10);
-    mpz_class b(*arg1, 10);
-    mpz_class c = a * b;
-
-    Local<String> res = String::New(c.get_str(10).c_str());
-    return scope.Close(res);
-
-  } else {
-    return ex();
+  try {
+    c = getmpz(args[0]) * getmpz(args[1]);
+  } catch (const char * err) {
+    return ex(String::New(err));
   }
+
+  Local<String> res = String::New(c.get_str(10).c_str());
+  return scope.Close(res);
 }
 
 Handle<Value>
 div(const Arguments &args) {
   HandleScope scope;
+  mpz_class c;
 
-  if (( args[0]->IsNumber() || args[0]->IsString())
-    && (args[1]->IsNumber() || args[1]->IsString() )) {
-
-    String::Utf8Value arg0(args[0]->ToString());
-    String::Utf8Value arg1(args[1]->ToString());
-
-    mpz_class a(*arg0, 10);
-    mpz_class b(*arg1, 10);
-    mpz_class c = a / b;
-
-    Local<String> res = String::New(c.get_str(10).c_str());
-    return scope.Close(res);
-
-  } else {
-    return ex();
+  try {
+    c = getmpz(args[0]) / getmpz(args[1]);
+  } catch (const char * err) {
+    return ex(String::New(err));
   }
+
+  Local<String> res = String::New(c.get_str(10).c_str());
+  return scope.Close(res);
 }
+
 
 extern "C" void
 init (Handle<Object> target)
@@ -218,6 +197,7 @@ init (Handle<Object> target)
   NODE_SET_METHOD(target, "mod", noop);
   NODE_SET_METHOD(target, "powmod", noop);
 
+  // testing
   NODE_SET_METHOD(target, "type", getType);
 }
 
