@@ -1,3 +1,26 @@
 
 include and build gmp locally
 allow returning the number in user specified base
+
+// api ideas
+var big = gmp("2345234523804572380457")
+var oth = gmp("232347823482342349872349872394872423.33")
+var ret = oth.div(big)
+ret.toString();
+ret.toInt();
+ret.toDouble();
+
+---
+
+function tmpl(a,b){
+  var c = a/b;
+  return Math.pow(c, 2);
+}
+
+var fn = gmp(tmpl);
+
+// if callback passed in then exec async
+var gmpresult = fn("347589237458273894572893457892", "41.2343123412141" [, callback]);
+
+gmpresult.toString();
+
