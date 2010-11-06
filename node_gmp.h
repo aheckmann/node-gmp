@@ -16,8 +16,9 @@ class GInt: public node::ObjectWrap {
     static Handle<Value> Add(const Arguments &args);
     static Handle<Value> ToString(const Arguments &args);
 
-  private:
     static Handle<Value> New(const Arguments &args);
+
+  private:
     int val_;
 };
 

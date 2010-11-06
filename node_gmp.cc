@@ -61,10 +61,11 @@ GInt::Add(const Arguments &args) {
 Handle<Value>
 GInt::ToString(const Arguments &args) {
   HandleScope scope;
-  //Handle<Value> val = Integer::New(val_);
-  //Handle<Value> ret = String::New(val->ToString());
-  Handle<Value> ret = String::New("haha");
-  return scope.Close(ret);
+
+  GInt *self = ObjectWrap::Unwrap<GInt>(args.This());
+
+  Handle<Value> val = Integer::New(self->val_);
+  return scope.Close(val->ToString());
 }
 
 
@@ -74,14 +75,14 @@ void RegisterModule(Handle<Object> target) {
 
   //target->Set(String::NewSymbol("toHex"),   FunctionTemplate::New(ToHex)->GetFunction());
 
-  /*
   Local<FunctionTemplate> t_int = FunctionTemplate::New(GInt::New);
   t_int->InstanceTemplate()->SetInternalFieldCount(1);
   t_int->SetClassName(String::NewSymbol("Integer"));
+
   NODE_SET_PROTOTYPE_METHOD(t_int, "add", GInt::Add);
   NODE_SET_PROTOTYPE_METHOD(t_int, "toString", GInt::ToString);
+
   target->Set(String::NewSymbol("Int"), t_int->GetFunction());
-  */
 
 }
 
