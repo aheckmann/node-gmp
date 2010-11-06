@@ -4,9 +4,8 @@ var assert = require("assert");
 
 console.log("gmp version: %s", gmp.version);
 
-var gint = new gmp.Int();
-var gint = new gmp.Int(49);
-gint.add(1);
+assert.equal(0, new gmp.Int().toString());
+assert.equal("0", new gmp.Int(0).toString());
 
-console.log(gint.toString());
+assert.equal(50, new gmp.Int(43.9).add("7.9").toString());
 

@@ -19,7 +19,7 @@ GInt::New(const Arguments &args) {
 
   int i = 0;
 
-  if (args[0]->IsNumber()) {
+  if (args[0]->IsNumber() || args[0]->IsString()) {
     i = args[0]->Uint32Value();
   }
 
@@ -45,7 +45,7 @@ GInt::Add(const Arguments &args) {
 
   int i = 0;
 
-  if (args[0]->IsNumber()) {
+  if (args[0]->IsNumber() || args[0]->IsString()) {
     i = args[0]->Uint32Value();
   }
 
