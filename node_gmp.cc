@@ -77,7 +77,7 @@ void RegisterModule(Handle<Object> target) {
 
   Local<FunctionTemplate> t_int = FunctionTemplate::New(GInt::New);
   t_int->InstanceTemplate()->SetInternalFieldCount(1);
-  t_int->SetClassName(String::NewSymbol("Integer"));
+  t_int->SetClassName(String::NewSymbol("GInt"));
 
   NODE_SET_PROTOTYPE_METHOD(t_int, "add", GInt::Add);
   NODE_SET_PROTOTYPE_METHOD(t_int, "toString", GInt::ToString);
