@@ -3,24 +3,27 @@
 #include <stdio.h>
 #include <stdarg.h>
 #include <obstack.h>
-#include <gmp.h>
-#include <gmpxx.h>
 
 #include "node_gmp.h"
 
+
 using namespace v8;
 using namespace node;
-
 
 
 Handle<Value>
 GInt::New(const Arguments &args) {
   HandleScope scope;
 
-  int i = 0;
+  mpz_class i = 0;
 
   if (args[0]->IsNumber() || args[0]->IsString()) {
-    i = args[0]->Uint32Value();
+    String::Utf8Value val(args[0]->ToString());
+
+    // truncate decimals
+    char * num = strtok(*val, ".");
+
+    i = num;
   }
 
   GInt *g = new GInt(i);
@@ -29,7 +32,7 @@ GInt::New(const Arguments &args) {
 }
 
 
-GInt::GInt(int val): ObjectWrap() {
+GInt::GInt(mpz_class val): ObjectWrap() {
   val_ = val;
 }
 
@@ -42,18 +45,17 @@ Handle<Value>
 GInt::Add(const Arguments &args) {
   HandleScope scope;
 
-
-  int i = 0;
-
   if (args[0]->IsNumber() || args[0]->IsString()) {
-    i = args[0]->Uint32Value();
+    String::Utf8Value val(args[0]->ToString());
+
+    // truncate decimals
+    char * num = strtok(*val, ".");
+
+    mpz_class i(num, 10);
+
+    GInt *self = ObjectWrap::Unwrap<GInt>(args.This());
+    self->val_ += i;
   }
-
-  GInt *self = ObjectWrap::Unwrap<GInt>(args.This());
-
-  // todo check for size limitiations?
-  // nah, this will be a mpz_t
-  self->val_ += i;
 
   return args.This();
 }
@@ -64,8 +66,8 @@ GInt::ToString(const Arguments &args) {
 
   GInt *self = ObjectWrap::Unwrap<GInt>(args.This());
 
-  Handle<Value> val = Integer::New(self->val_);
-  return scope.Close(val->ToString());
+  Local<String> str = String::New(self->val_.get_str(10).c_str());
+  return scope.Close(str);
 }
 
 
