@@ -17,5 +17,5 @@ def configure(conf):
 def build(bld):
   obj = bld.new_task_gen('cxx', 'shlib', 'node_addon')
   obj.target = 'gmp'
-  obj.source = 'gmp.cc'
+  obj.source = 'node_gmp.cc'
   obj.uselib = 'GMP'
