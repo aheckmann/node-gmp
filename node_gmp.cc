@@ -10,6 +10,19 @@
 using namespace v8;
 using namespace node;
 
+#define GETARG(arg)                                                          \
+  if (arg->IsNumber() || arg->IsString()) {                                  \
+    String::Utf8Value val(arg->ToString());                                  \
+    char * num = strtok(*val, ".");                                          \
+    try {                                                                    \
+      i = num;                                                               \
+    } catch (std::invalid_argument err) {                                    \
+      return ThrowException(Exception::Error(String::New("bad argument")));  \
+    }                                                                        \
+  } else if (!(arg->IsUndefined() || arg->IsNull())) {                       \
+    return ThrowException(Exception::Error(String::New("bad argument")));    \
+  }
+
 
 Handle<Value>
 GInt::New(const Arguments &args) {
@@ -17,20 +30,7 @@ GInt::New(const Arguments &args) {
 
   mpz_class i = 0;
 
-  if (args[0]->IsNumber() || args[0]->IsString()) {
-    String::Utf8Value val(args[0]->ToString());
-
-    // truncate decimals
-    char * num = strtok(*val, ".");
-
-    try {
-      i = num;
-    } catch (std::invalid_argument err) {
-      return ThrowException(Exception::Error(String::New("bad argument")));
-    }
-  } else if (!(args[0]->IsUndefined() || args[0]->IsNull())) {
-    return ThrowException(Exception::Error(String::New("bad argument")));
-  }
+  GETARG(args[0]);
 
   GInt *g = new GInt(i);
   g->Wrap(args.This());
@@ -51,26 +51,12 @@ Handle<Value>
 GInt::Add(const Arguments &args) {
   HandleScope scope;
 
-  if (args[0]->IsNumber() || args[0]->IsString()) {
-    String::Utf8Value val(args[0]->ToString());
+  mpz_class i = 0;
 
-    // truncate decimals
-    char * num = strtok(*val, ".");
+  GETARG(args[0]);
 
-    mpz_class i;
-
-    try {
-      i = num;
-    } catch (std::invalid_argument err) {
-      return ThrowException(Exception::Error(String::New("bad argument")));
-    }
-
-    GInt *self = ObjectWrap::Unwrap<GInt>(args.This());
-    self->val_ += i;
-
-  } else if (!(args[0]->IsUndefined() || args[0]->IsNull())) {
-    return ThrowException(Exception::Error(String::New("bad argument")));
-  }
+  GInt *self = ObjectWrap::Unwrap<GInt>(args.This());
+  self->val_ += i;
 
   return args.This();
 }
