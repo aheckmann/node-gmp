@@ -4,16 +4,7 @@ var assert = require("assert");
 
 console.log("gmp version: %s", gmp.version);
 
-assert.equal(0, new gmp.Int().toString());
-assert.equal(0, new gmp.Int(0).toString());
-assert.equal("0", new gmp.Int().toString());
-assert.equal("0", new gmp.Int(0).toString());
-assert.equal("10", new gmp.Int(10.9).toString());
-assert.equal("1001", new gmp.Int(1).add(1000).toString());
-assert.equal("1001", new gmp.Int("1").add(1000).toString());
-assert.equal("1001", new gmp.Int(1).add("1000").toString());
-assert.equal("1001", new gmp.Int("1").add("1000").toString());
-
+// args
 
 ; [ "fail"
   , {}
@@ -43,6 +34,17 @@ assert.equal("1001", new gmp.Int("1").add("1000").toString());
 
 
 
+assert.equal(0, new gmp.Int().toString());
+assert.equal(0, new gmp.Int(0).toString());
+assert.equal("0", new gmp.Int().toString());
+assert.equal("0", new gmp.Int(0).toString());
+assert.equal("10", new gmp.Int(10.9).toString());
+
+assert.equal("1001", new gmp.Int(1).add(1000).toString());
+assert.equal("1001", new gmp.Int("1").add(1000).toString());
+assert.equal("1001", new gmp.Int(1).add("1000").toString());
+assert.equal("1001", new gmp.Int("1").add("1000").toString());
+
 assert.equal( "2233445598765432112345678909876543212345728034872035834572034572803457802435728034578023457023580250"
 , new gmp.Int("2233445598765432112345678909876543212345728034872035834572034572803457802435728034578023457023580243.2").add("7.9").toString()
 );
@@ -53,4 +55,24 @@ assert.equal( "22334455987654321123456789098765432123457280348720358345720345728
 
 assert.equal( "2233445598765432112345678909876543212345728034872035834572034572803457802435728034578023457023580243"
 , new gmp.Int("2233445598765432112345678909876543212345728034872035834572034572803457802435728034578023457023580250").add("-7").toString()
+)
+
+
+assert.equal("999", new gmp.Int(1000).sub(1).toString());
+assert.equal("999", new gmp.Int("1000").sub(1).toString());
+assert.equal("999", new gmp.Int(1000).sub("1").toString());
+assert.equal("999", new gmp.Int("1000").sub("1").toString());
+
+assert.equal( "2233445598765432112345678909876543212345728034872035834572034572803457802435728034578023457023580243"
+, new gmp.Int("2233445598765432112345678909876543212345728034872035834572034572803457802435728034578023457023580250.2").sub("7.9").toString()
 );
+
+assert.equal( "2233445598765432112345678909876543212345728034872035834572034572803457802435728034578023457023580243"
+, new gmp.Int("2233445598765432112345678909876543212345728034872035834572034572803457802435728034578023457023580250").sub("7").toString()
+);
+
+assert.equal( "2233445598765432112345678909876543212345728034872035834572034572803457802435728034578023457023580250"
+, new gmp.Int("2233445598765432112345678909876543212345728034872035834572034572803457802435728034578023457023580243").sub("-7").toString()
+)
+
+

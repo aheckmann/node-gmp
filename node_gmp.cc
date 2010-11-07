@@ -62,6 +62,20 @@ GInt::Add(const Arguments &args) {
 }
 
 Handle<Value>
+GInt::Sub(const Arguments &args) {
+  HandleScope scope;
+
+  mpz_class i = 0;
+
+  GETARG(args[0]);
+
+  GInt *self = ObjectWrap::Unwrap<GInt>(args.This());
+  self->val_ -= i;
+
+  return args.This();
+}
+
+Handle<Value>
 GInt::ToString(const Arguments &args) {
   HandleScope scope;
 
@@ -83,6 +97,7 @@ void RegisterModule(Handle<Object> target) {
   t_int->SetClassName(String::NewSymbol("GInt"));
 
   NODE_SET_PROTOTYPE_METHOD(t_int, "add", GInt::Add);
+  NODE_SET_PROTOTYPE_METHOD(t_int, "sub", GInt::Sub);
   NODE_SET_PROTOTYPE_METHOD(t_int, "toString", GInt::ToString);
 
   target->Set(String::NewSymbol("Int"), t_int->GetFunction());
