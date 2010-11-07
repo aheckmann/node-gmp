@@ -10,17 +10,17 @@
 using namespace v8;
 using namespace node;
 
-#define GETARG(arg)                                                          \
-  if (arg->IsNumber() || arg->IsString()) {                                  \
-    String::Utf8Value val(arg->ToString());                                  \
-    char * num = strtok(*val, ".");                                          \
-    try {                                                                    \
-      i = num;                                                               \
-    } catch (std::invalid_argument err) {                                    \
-      return ThrowException(Exception::Error(String::New("bad argument")));  \
-    }                                                                        \
-  } else if (!(arg->IsUndefined() || arg->IsNull())) {                       \
-    return ThrowException(Exception::Error(String::New("bad argument")));    \
+#define GETARG(arg)                                                              \
+  if (arg->IsNumber() || arg->IsString()) {                                      \
+    String::Utf8Value val(arg->ToString());                                      \
+    char * num = strtok(*val, ".");                                              \
+    try {                                                                        \
+      i = num;                                                                   \
+    } catch (std::invalid_argument err) {                                        \
+      return ThrowException(Exception::TypeError(String::New("bad argument")));  \
+    }                                                                            \
+  } else if (!(arg->IsUndefined() || arg->IsNull())) {                           \
+    return ThrowException(Exception::TypeError(String::New("bad argument")));    \
   }
 
 
