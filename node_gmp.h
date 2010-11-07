@@ -20,6 +20,7 @@ class GInt: public node::ObjectWrap {
     static Handle<Value> Add(const Arguments &args);
     static Handle<Value> Sub(const Arguments &args);
     static Handle<Value> Mul(const Arguments &args);
+    static Handle<Value> Div(const Arguments &args);
     static Handle<Value> ToString(const Arguments &args);
 
     static Handle<Value> New(const Arguments &args);
