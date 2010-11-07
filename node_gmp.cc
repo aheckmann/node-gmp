@@ -104,6 +104,33 @@ GInt::Div(const Arguments &args) {
 }
 
 Handle<Value>
+GInt::Pow(const Arguments &args) {
+  HandleScope scope;
+
+  if (!args[0]->IsNumber()) {
+    return ThrowException(Exception::TypeError(String::New("exponent must be an int")));
+  }
+
+  GInt *self = ObjectWrap::Unwrap<GInt>(args.This());
+
+  mpz_t c;
+  mpz_init(c);
+
+  try {
+    mpz_pow_ui(c, self->val_.get_mpz_t(), (long)args[0]->Int32Value());
+  } catch (const char *err) {
+    return ThrowException(Exception::TypeError(
+          String::New("bad argument")));
+  }
+
+  self->val_ = mpz_class(c);
+
+  mpz_clear(c);
+
+  return args.This();
+}
+
+Handle<Value>
 GInt::ToString(const Arguments &args) {
   HandleScope scope;
 
@@ -128,6 +155,7 @@ void RegisterModule(Handle<Object> target) {
   NODE_SET_PROTOTYPE_METHOD(t_int, "sub", GInt::Sub);
   NODE_SET_PROTOTYPE_METHOD(t_int, "mul", GInt::Mul);
   NODE_SET_PROTOTYPE_METHOD(t_int, "div", GInt::Div);
+  NODE_SET_PROTOTYPE_METHOD(t_int, "pow", GInt::Pow);
   NODE_SET_PROTOTYPE_METHOD(t_int, "toString", GInt::ToString);
 
   target->Set(String::NewSymbol("Int"), t_int->GetFunction());
