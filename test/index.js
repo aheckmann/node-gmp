@@ -22,7 +22,6 @@ assert.equal("1001", new gmp.Int("1").add("1000").toString());
   , function(){}
   , NaN
   ].forEach(function(bad){
-      console.log("testing " + bad);
       var err = {};
       try {
         new gmp.Int(bad);

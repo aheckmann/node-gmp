@@ -28,6 +28,8 @@ GInt::New(const Arguments &args) {
     } catch (std::invalid_argument err) {
       return ThrowException(Exception::Error(String::New("bad argument")));
     }
+  } else if (!(args[0]->IsUndefined() || args[0]->IsNull())) {
+    return ThrowException(Exception::Error(String::New("bad argument")));
   }
 
   GInt *g = new GInt(i);
@@ -65,6 +67,9 @@ GInt::Add(const Arguments &args) {
 
     GInt *self = ObjectWrap::Unwrap<GInt>(args.This());
     self->val_ += i;
+
+  } else if (!(args[0]->IsUndefined() || args[0]->IsNull())) {
+    return ThrowException(Exception::Error(String::New("bad argument")));
   }
 
   return args.This();
