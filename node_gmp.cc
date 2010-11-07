@@ -23,7 +23,11 @@ GInt::New(const Arguments &args) {
     // truncate decimals
     char * num = strtok(*val, ".");
 
-    i = num;
+    try {
+      i = num;
+    } catch (std::invalid_argument err) {
+      return ThrowException(Exception::Error(String::New("bad argument")));
+    }
   }
 
   GInt *g = new GInt(i);
@@ -51,7 +55,13 @@ GInt::Add(const Arguments &args) {
     // truncate decimals
     char * num = strtok(*val, ".");
 
-    mpz_class i(num, 10);
+    mpz_class i;
+
+    try {
+      i = num;
+    } catch (std::invalid_argument err) {
+      return ThrowException(Exception::Error(String::New("bad argument")));
+    }
 
     GInt *self = ObjectWrap::Unwrap<GInt>(args.This());
     self->val_ += i;
