@@ -116,12 +116,7 @@ GInt::Pow(const Arguments &args) {
   mpz_t c;
   mpz_init(c);
 
-  try {
-    mpz_pow_ui(c, self->val_.get_mpz_t(), (long)args[0]->Int32Value());
-  } catch (const char *err) {
-    return ThrowException(Exception::TypeError(
-          String::New("bad argument")));
-  }
+  mpz_pow_ui(c, self->val_.get_mpz_t(), (long)args[0]->Int32Value());
 
   self->val_ = mpz_class(c);
 
