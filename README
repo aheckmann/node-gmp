@@ -1,4 +1,7 @@
 
+NOTE: This project has been discontinued b/c gmp aborts() under many circumstance and will crash node along with it.
+
+
 A project to learn c/c++ and how to build node addons.
 
 - and oh yeah, I suck at maths.
